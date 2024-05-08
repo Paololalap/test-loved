@@ -25,7 +25,7 @@ const base_URL = process.env.NEXT_PUBLIC_BASE_URL
 export default function PrivatePage() {
   const { user } = useAuthState()
   const [userDetails, setUserDetails] = useState('')
-  const [isCovertingFile, setIsConvertingFile] = useState(false)
+  const [isConvertingFile, setIsConvertingFile] = useState(false)
   const [pageData, setPageData] = useState(null)
   const [isUpdating, setIsUpdating] = useState(false)
   const router = useRouter()
@@ -141,7 +141,7 @@ export default function PrivatePage() {
         </div>
       </header>
 
-      <div className="mx-auto mt-6  flex flex-col gap-[32px] md:mt-[199px] h-fit w-full max-w-[821px]   px-[20px] md:w-[821px] md:px-0 mb-[104px]">
+      <div className="mx-auto mb-[104px]  mt-6 flex h-fit w-full max-w-[821px] flex-col gap-[32px]   px-[20px] md:mt-[199px] md:w-[821px] md:px-0">
         <h1 className="text-[25px] font-bold leading-[30px] text-[#650031]">
           Welcome Back, {userDetails?.first_name}
         </h1>
@@ -153,64 +153,124 @@ export default function PrivatePage() {
           <p className="text-[16px] leading-[19.2px] text-[#A2AEBA]">
             Raise money for charities and personal causes
           </p>
-          <div className="mt-[16px] flex flex-col md:flex-row items-start md:items-center md:h-[49px] justify-between border-b pb-2 md:pb-0 border-[#E9E9E9]">
+          <div className="mt-[16px] flex flex-col items-start justify-between border-b border-[#E9E9E9] pb-2 md:h-[49px] md:flex-row md:items-center md:pb-0">
             <div className="mb-2 md:mb-0">
-              <p className="text-[16px] font-medium leading-[19.2px] mb-1 md:mb-0">
-                {base_URL}{pageData?.username} {pageData && <EditCustomPageLink isUpdating={isUpdating} handleSubmit={handlePageLinkEdit} value={`${pageData?.username}`} />}
+              <p className="mb-1 text-[16px] font-medium leading-[19.2px] md:mb-0">
+                {base_URL}
+                {pageData?.username}{" "}
+                {pageData && (
+                  <EditCustomPageLink
+                    isUpdating={isUpdating}
+                    handleSubmit={handlePageLinkEdit}
+                    value={`${pageData?.username}`}
+                  />
+                )}
               </p>
-              <Link href={`/${pageData?.username}`} target="_blank" className="text-[12px] font-bold leading-[14.4px] text-[#FE5487]">
+              <Link
+                href={`/${pageData?.username}`}
+                target="_blank"
+                className="text-[12px] font-bold leading-[14.4px] text-[#FE5487]"
+              >
                 Preview Page
               </Link>
             </div>
-            <button onClick={() => copyToClipboard(`${base_URL}/${username}`)}  >
-              <Badge variant="outline" className="border-[#FE5487] text-[16px] font-medium leading-[19.2px] text-[#FE5487]">
+            <button onClick={() => copyToClipboard(`${base_URL}/${username}`)}>
+              <Badge
+                variant="outline"
+                className="border-[#FE5487] text-[16px] font-medium leading-[19.2px] text-[#FE5487]"
+              >
                 Share Page Link
               </Badge>
             </button>
           </div>
 
-          <Link className="mt-[16px] block h-[35px] border-b border-[#E9E9E9]" href={'/getting-started'} >
+          <Link
+            className="mt-[16px] block h-[35px] border-b border-[#E9E9E9]"
+            href={"/getting-started"}
+          >
             Create new page
           </Link>
-
-
         </div>
 
         <div className="md:max-h-[254px]">
-          <h3 className="font-[900] size-[18px] leading-[22px] mb-[16px] text-[#650031]">Moments</h3>
-          <div className="flex flex-col md:flex-row gap-[16px]">
-            <div className="relative w-full md:w-[216px]">
-              <Image src={pageData?.images && pageData.images[0] || man_woman_photo} alt="" width={216} height={216} className=" size-full md:size-[216px] border border-[1px] border-[#650031] rounded-[8px]" />
-              <button><Image src={threeDot} alt="" className="size-[20px] absolute top-[11px] right-[6px]" /></button>
+          <h3 className="mb-[16px] size-[18px] font-[900] leading-[22px] text-[#650031]">
+            Moments
+          </h3>
+          <div className="flex flex-col gap-[16px] md:flex-row">
+            <div className="relative w-full rounded-[8px] border border-[#650031] md:size-[216px] overflow-hidden">
+              <Image
+                src={
+                  (pageData?.images && pageData.images[0]) || man_woman_photo
+                }
+                alt="Photo"
+                className="object-cover"
+                fill
+                sizes="100vw"
+              />
+              <button>
+                <Image
+                  src={threeDot}
+                  alt=""
+                  className="absolute right-[6px] top-[11px] size-[20px]"
+                />
+              </button>
             </div>
 
             <div className="flex gap-[16px]">
-              {pageData?.images?.length > 1 ?
-                pageData.images.slice(1, pageData.images.length).map((i, ind) => <Image key={ind} src={i} alt="" width={100} height={100} className="size-[100px] rounded-[8px]" />) :
-                <Image src={women} alt="" width={100} height={100} className="size-[100px] rounded-[8px]" />}
+              {pageData?.images?.length > 1 ? (
+                pageData.images
+                  .slice(1, pageData.images.length)
+                  .map((i, ind) => (
+                    <Image
+                      key={ind}
+                      src={i}
+                      alt=""
+                      width={100}
+                      height={100}
+                      className="size-[100px] rounded-[8px]"
+                    />
+                  ))
+              ) : (
+                <Image
+                  src={women}
+                  alt=""
+                  width={100}
+                  height={100}
+                  className="size-[100px] rounded-[8px]"
+                />
+              )}
               <input
                 type="file"
                 id="fileInput"
-
-                style={{ display: 'none' }}
+                style={{ display: "none" }}
                 onChange={handleFileChange}
               />
 
               {/* Image */}
-              <label htmlFor={`${pageData && 'fileInput'}`} className={`${pageData && 'cursor-pointer'} block`}>
-                <Image src={addPhoto} alt="" width={100} height={100} className="rounded-md" />
+              <label
+                htmlFor={`${pageData && "fileInput"}`}
+                className={`${pageData && "cursor-pointer"} block`}
+              >
+                <Image
+                  src={addPhoto}
+                  alt=""
+                  width={100}
+                  height={100}
+                  className="rounded-md"
+                />
               </label>
 
               {/* Overlay with loading message */}
               {isUploading && (
-                <div className="absolute top-0 left-0 w-full h-full bg-white bg-opacity-70 flex justify-center items-center z-10">
-                  <p className="text-lg font-semibold">{isCovertingFile ? 'Converting...' : 'Uploading...'}</p>
+                <div className="absolute left-0 top-0 z-10 flex h-full w-full items-center justify-center bg-white bg-opacity-70">
+                  <p className="text-lg font-semibold">
+                    {isConvertingFile ? "Converting..." : "Uploading..."}
+                  </p>
                 </div>
               )}
             </div>
           </div>
         </div>
-
       </div>
 
       <PublictFooter />
